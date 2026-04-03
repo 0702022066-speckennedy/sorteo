@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gran Sorteo - Gana Premios en Efectivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header con imagen del millonario */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-overlay h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-overlay p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-overlay .subtitle {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        /* Sección de Premios */
+        .prizes-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .prizes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .prize-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prize-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .prize-card.first::before {
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+        }
+
+        .prize-card.second::before {
+            background: linear-gradient(90deg, #C0C0C0, #808080);
+        }
+
+        .prize-card.third::before {
+            background: linear-gradient(90deg, #CD7F32, #8B4513);
+        }
+
+        .prize-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .prize-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .prize-card.first .prize-icon {
+            color: #FFD700;
+        }
+
+        .prize-card.second .prize-icon {
+            color: #C0C0C0;
+        }
+
+        .prize-card.third .prize-icon {
+            color: #CD7F32;
+        }
+
+        .prize-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        .prize-label {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .prize-quantity {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Sección de Compra */
+        .buy-section {
+            background: white;
+            padding: 60px 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .buy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .ticket-info {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ticket-price {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .ticket-price span {
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .ticket-details {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .detail-item i {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .buy-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            margin: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .buy-button:active {
+            transform: translateY(-2px);
+        }
+
+        /* Botón Yape */
+        .yape-section {
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #742d9c 0%, #9b59b6 100%);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .yape-button {
+            background: #742d9c;
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(116, 45, 156, 0.4);
+            margin: 10px;
+            font-family: 'Poppins', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .yape-button:hover {
+            background: #8e44ad;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(116, 45, 156, 0.6);
+        }
+
+        .yape-number {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 15px 0;
+            letter-spacing: 3px;
+        }
+
+        /* Lista de Participantes */
+        .participants-section {
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .excel-button {
+            background: linear-gradient(135deg, #217346 0%, #1a5c38 100%);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(33, 115, 70, 0.4);
+            font-family: 'Poppins', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .excel-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(33, 115, 70, 0.6);
+        }
+
+        /* Sticker de Agradecimiento */
+        .thank-you-section {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideInRight 1s ease, bounce 2s infinite;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        .thank-you-sticker {
+            font-size: 3.5rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        .thank-you-text {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        .thank-you-text small {
+            display: block;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+
+            .hero-overlay p {
+                font-size: 1.1rem;
+            }
+
+            .prize-amount {
+                font-size: 2.5rem;
+            }
+
+            .ticket-price {
+                font-size: 3rem;
+            }
+
+            .buy-button, .yape-button, .excel-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .thank-you-section {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                max-width: none;
+            }
+        }
+
+        /* Modal para compra */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .modal-content p {
+            margin: 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .close-modal {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-ticket {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-ticket:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section con imagen del millonario -->
+    <section class="hero-section">
+        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=1200&h=400&fit=crop" alt="Señor Sabio Millonario" class="hero-image">
+        <div class="hero-overlay">
+            <h1>🎰 GRAN SORTEO 🎰</h1>
+            <p>¡Participa y Gana Premios en Efectivo!</p>
+            <p class="subtitle">Solo 500 tickets disponibles - ¡No te quedes fuera!</p>
+        </div>
+    </section>
+
+    <!-- Sección de Premios -->
+    <section class="prizes-section">
+        <h2 class="section-title">🏆 PREMIOS DISPONIBLES 🏆</h2>
+        
+        <div class="prizes-container">
+            <!-- Primer Premio -->
+            <div class="prize-card first">
+                <div class="prize-icon">🥇</div>
+                <div class="prize-amount">S/ 500</div>
+                <div class="prize-label">PRIMER PREMIO</div>
+                <div class="prize-quantity">
+                    <i class="fas fa-trophy"></i> 1 Ganador
+                </div>
+            </div>
+
+            <!-- Segundo Premio -->
+            <div class="prize-card second">
+                <div class="prize-icon">🥈</div>
+                <div class="prize-amount">S/ 200</div>
+                <div class="prize-label">SEGUNDO PREMIO</div>
+                <div class="prize-quantity">
+                    <i class="fas fa-medal"></i> 2 Ganadores
+                </div>
+            </div>
+
+            <!-- Tercer Premio -->
+            <div class="prize-card third">
+                <div class="prize-icon">🥉</div>
+                <div class="prize-amount">S/ 100</div>
+                <div class="prize-label">TERCER PREMIO</div>
+                <div class="prize-quantity">
+                    <i class="fas fa-award"></i> 3 Ganadores
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Compra -->
+    <section class="buy-section">
+        <div class="buy-container">
+            <h2 class="section-title" style="color: #333;">🎟️ ADQUIERE TU TICKET</h2>
+            
+            <div class="ticket-info">
+                <div class="ticket-price">
+                    S/ 5.00 <span>por ticket</span>
+                </div>
+                
+                <div class="ticket-details">
+                    <div class="detail-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>500 Tickets Disponibles</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-gift"></i>
+                        <span>6 Premios en Total</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-percentage"></i>
+                        <span>¡Gran Probabilidad de Ganar!</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="buy-button" onclick="openModal()">
+                <i class="fas fa-shopping-cart"></i> COMPRAR AHORA
+            </button>
+
+            <!-- Sección Yape -->
+            <div class="yape-section">
+                <h3 style="font-size: 1.5rem; margin-bottom: 15px;">
+                    <i class="fas fa-mobile-alt"></i> PAGA CON YAPE
+                </h3>
+                <p style="margin-bottom: 15px;">Escanea o haz clic para pagar rápidamente</p>
+                <div class="yape-number">904090716</div>
+                <button class="yape-button" onclick="openYape()">
+                    <i class="fas fa-qrcode"></i> ABRIR YAPE
+                </button>
+                <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.9;">
+                    * Al pagar, envía tu comprobante al WhatsApp
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lista de Participantes -->
+    <section class="participants-section">
+        <h2 class="section-title">📋 LISTA DE PARTICIPANTES</h2>
+        <p style="color: white; margin-bottom: 30px; font-size: 1.2rem;">
+            Consulta el listado completo de los 500 participantes
+        </p>
+        <button class="excel-button" onclick="downloadExcel()">
+            <i class="fas fa-file-excel"></i> VER LISTA EN EXCEL
+        </button>
+    </section>
+
+    <!-- Sticker de Agradecimiento -->
+    <div class="thank-you-section">
+        <div class="thank-you-sticker">👍</div>
+        <div class="thank-you-text">
+            ¡GRACIAS POR PARTICIPAR!
+            <small>Tu apoyo hace posible este sorteo 🙏</small>
+        </div>
+    </div>
+
+    <!-- Modal de Compra -->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <h2><i class="fas fa-ticket-alt"></i> Comprar Tickets</h2>
+            <p>Ingresa la cantidad de tickets que deseas comprar:</p>
+            <input type="number" id="ticketQuantity" class="input-ticket" min="1" max="500" value="1" placeholder="Cantidad de tickets">
+            <p id="totalPrice" style="font-size: 1.5rem; font-weight: 700; color: #667eea; margin: 20px 0;">
+                Total: S/ 5.00
+            </p>
+            <button class="buy-button" onclick="confirmPurchase()" style="margin: 10px 0;">
+                <i class="fas fa-check"></i> CONFIRMAR COMPRA
+            </button>
+            <button class="close-modal" onclick="closeModal()">
+                <i class="fas fa-times"></i> Cerrar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Calcular precio total
+        document.getElementById('ticketQuantity').addEventListener('input', function() {
+            const quantity = parseInt(this.value) || 0;
+            const total = quantity * 5;
+            document.getElementById('totalPrice').textContent = `Total: S/ ${total.toFixed(2)}`;
+        });
+
+        // Abrir modal
+        function openModal() {
+            document.getElementById('buyModal').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('buyModal').style.display = 'none';
+        }
+
+        // Confirmar compra
+        function confirmPurchase() {
+            const quantity = parseInt(document.getElementById('ticketQuantity').value);
+            if (quantity > 0 && quantity <= 500) {
+                alert(`¡Gracias por tu interés!\n\nHas seleccionado ${quantity} ticket(s)\nTotal a pagar: S/ ${(quantity * 5).toFixed(2)}\n\nPor favor, realiza el pago con Yape al número 904090716 y envía tu comprobante.`);
+                closeModal();
+                openYape();
+            } else {
+                alert('Por favor, ingresa una cantidad válida (1-500 tickets)');
+            }
+        }
+
+        // Abrir Yape
+        function openYape() {
+            // Intentar abrir la app de Yape
+            const yapeNumber = '904090716';
+            
+            // Para móviles Android
+            window.location.href = `yape://send?phone=${yapeNumber}`;
+            
+            // Fallback: abrir WhatsApp para enviar comprobante
+            setTimeout(() => {
+                const whatsappMessage = `Hola, deseo participar en el sorteo. Mi número de Yape es: ${yapeNumber}`;
+                const whatsappUrl = `https://wa.me/51${yapeNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                if (confirm('¿No se abrió Yape? Haz clic en Aceptar para contactar por WhatsApp y enviar tu comprobante.')) {
+                    window.open(whatsappUrl, '_blank');
+                }
+            }, 1000);
+        }
+
+        // Descargar Excel
+        function downloadExcel() {
+            // Crear datos de ejemplo (en un caso real, esto vendría de una base de datos)
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Nro,Ticket,Nombre,Apellido,Telefono,Email,Fecha de Compra\n";
+            
+            // Generar 500 participantes de ejemplo
+            for (let i = 1; i <= 500; i++) {
+                csvContent += `${i},TICKET-${String(i).padStart(4, '0')},Participante ${i},Apellido ${i},999999${String(i).padStart(3, '0')},participante${i}@email.com,04/04/2026\n`;
+            }
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "lista_participantes_sorteo.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('Se ha descargado el archivo Excel con la lista de participantes');
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('buyModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Animación de entrada suave
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
